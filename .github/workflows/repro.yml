@@ -1,0 +1,14 @@
+# Runs repro.sh in Docker on GitHub's x64 and arm64 runners.
+name: repro
+on: [push, workflow_dispatch]
+jobs:
+  criu-dump:
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ubuntu-24.04, ubuntu-24.04-arm]
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t bun-aot-criu .
+      - run: docker run --rm --privileged bun-aot-criu
