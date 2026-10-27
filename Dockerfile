@@ -7,5 +7,5 @@ ENV PATH=/root/.bun/bin:$PATH
 # bun-pr installs into a temporary directory when run through bunx, so keep a copy on PATH.
 RUN bunx bun-pr 45631 && cp /tmp/bun-node-*/bun-*-pr45631 /usr/local/bin/bun-45631 && bun-45631 --revision
 WORKDIR /repro
-COPY hello.ts repro.sh ./
+COPY hello.ts repro.sh diagnose.sh ./
 CMD ["./repro.sh"]
