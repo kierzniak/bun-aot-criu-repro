@@ -7,9 +7,9 @@ cd "$(dirname "$0")"
 T=/sys/kernel/tracing
 [ -e $T/trace ] || mount -t tracefs nodev $T
 [ -x hello-aot ] || "$BUN" build --compile --aot hello.ts --outfile hello-aot >/dev/null 2>&1
-PORT=5009 setsid ./hello-aot </dev/null >/dev/null 2>&1 &
+PORT=5009 ./hello-aot </dev/null >/dev/null 2>&1 &
+pid=$!
 sleep 2
-pid=$(ss -ltnpH "sport = :5009" | sed 's/.*pid=\([0-9]*\).*/\1/')
 events="sys_enter_memfd_create sys_exit_memfd_create sys_enter_mmap sys_exit_mmap"
 echo > $T/trace
 # Filtered by name, because tracefs sees host PIDs, not the container's.
